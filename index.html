@@ -5,13 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Acadêmico — Fictícia S.A.</title>
   <link rel="stylesheet" href="css/estilo.css">
+  <style>
+    /* ---- Estilos exclusivos da versão de TREINO (não existem no site-alvo) ---- */
+    .faixa-treino {
+      background: repeating-linear-gradient(45deg,#b00020,#b00020 14px,#8a0019 14px,#8a0019 28px);
+      color:#fff; text-align:center; font-weight:700; font-size:14px;
+      padding:10px 12px; letter-spacing:.3px;
+    }
+    .faixa-treino span { background:rgba(0,0,0,.25); padding:2px 8px; border-radius:4px; }
+
+    /* Overlay educativo exibido ao "enviar" o formulário */
+    #overlay-educativo {
+      display:none; position:fixed; inset:0; z-index:50;
+      background:rgba(15,25,35,.92); color:#fff; overflow:auto; padding:40px 16px;
+    }
+    #overlay-educativo .painel {
+      max-width:640px; margin:0 auto; background:#13202c;
+      border:2px solid #b00020; border-radius:14px; padding:32px;
+    }
+    #overlay-educativo h2 { color:#ff6b7f; font-size:24px; margin-bottom:8px; }
+    #overlay-educativo p.intro { color:#cfd9e2; margin-bottom:20px; }
+    #overlay-educativo ol { margin:0 0 20px 20px; }
+    #overlay-educativo li { margin:10px 0; line-height:1.5; }
+    #overlay-educativo li strong { color:#ffd27f; }
+    #overlay-educativo code { background:rgba(255,255,255,.1); padding:1px 5px; border-radius:4px; font-size:13px; }
+    #overlay-educativo .fechar {
+      background:#b00020; color:#fff; border:none; padding:11px 18px;
+      border-radius:8px; font-size:15px; font-weight:600; cursor:pointer;
+    }
+    #overlay-educativo .fechar:hover { background:#8a0019; }
+    #overlay-educativo .nota { margin-top:16px; font-size:12px; color:#8fa3b5; }
+  </style>
 </head>
 <body>
   <!-- =====================================================================
-       SITE-ALVO FICTÍCIO — uso exclusivamente educacional.
-       "Fictícia S.A." é uma instituição inventada. Nenhuma marca real.
-       Este é o site LEGÍTIMO que os alunos vão espelhar no laboratório.
+       VERSÃO ESPELHO DE EXEMPLO — AMBIENTE DE TREINO
+       Esta página é a REFERÊNCIA do resultado esperado no laboratório.
+       Difere da clonagem de um atacante em dois pontos propositais:
+         1) Faixa visível de "PHISHING SIMULADO".
+         2) O formulário NÃO envia dados a lugar nenhum: ao clicar em
+            "Entrar", ele mostra uma tela educativa (overlay) e descarta
+            o que foi digitado.
+       Nunca remova esses dois elementos ao publicar.
        ===================================================================== -->
+
+  <div class="faixa-treino">
+    ⚠️ <span>AMBIENTE DE TREINO — PHISHING SIMULADO</span> &nbsp; Página de exemplo. Não insira senhas reais.
+  </div>
 
   <!-- barra superior fina -->
   <div class="barra-fina">
@@ -62,7 +102,8 @@
       <h1>Acesso ao Portal</h1>
       <p class="subtitulo">Entre com suas credenciais acadêmicas.</p>
 
-      <form action="#" method="post" autocomplete="off" onsubmit="return false;">
+      <!-- id no form para interceptar o envio via JavaScript -->
+      <form id="form-login" autocomplete="off">
         <label for="usuario">Usuário ou RA</label>
         <input type="text" id="usuario" name="usuario" placeholder="ex.: 2026001234">
 
@@ -101,5 +142,40 @@
       <span>© Instituição fictícia para fins didáticos · Santos/SP · <a href="sobre.html">Sobre este site</a></span>
     </div>
   </footer>
+
+  <!-- Tela educativa -->
+  <div id="overlay-educativo" role="dialog" aria-modal="true">
+    <div class="painel">
+      <h2>🎣 Você caiu em um phishing simulado!</h2>
+      <p class="intro">
+        Em um ataque real, os dados digitados agora estariam nas mãos de um golpista.
+        Aqui, <strong>nada foi enviado</strong> — o que você escreveu foi descartado.
+        Veja os sinais que denunciariam esta página:
+      </p>
+      <ol>
+        <li><strong>A URL é diferente da oficial.</strong> Olhe a barra de endereço: o domínio não é o da instituição (ex.: termina em <code>github.io</code>, não no site real).</li>
+        <li><strong>O cadeado (HTTPS) não garante que o site é legítimo.</strong> Qualquer um consegue um certificado grátis; cadeado significa "conexão cifrada", não "site confiável".</li>
+        <li><strong>O pedido chegou por um link inesperado.</strong> E-mails/mensagens com urgência ("sua conta será bloqueada") levando a telas de login são o vetor clássico.</li>
+        <li><strong>Pequenos detalhes fora do lugar.</strong> Página copiada pode ter links quebrados, imagens faltando ou textos levemente diferentes do original.</li>
+      </ol>
+      <p class="intro" style="margin-bottom:16px;">
+        <strong>Regra de ouro:</strong> nunca digite senha a partir de um link recebido.
+        Acesse sempre digitando o endereço oficial você mesmo ou usando um favorito confiável.
+      </p>
+      <button class="fechar" onclick="document.getElementById('overlay-educativo').style.display='none';">Entendi, voltar</button>
+      <p class="nota">Exercício didático — Segurança de Sistemas. Nenhum dado é coletado, enviado ou armazenado.</p>
+    </div>
+  </div>
+
+  <script>
+    // Intercepta o envio: NÃO há destino, NÃO há coleta. Apenas educa.
+    document.getElementById('form-login').addEventListener('submit', function (e) {
+      e.preventDefault();                 // impede qualquer envio
+      document.getElementById('senha').value = '';   // descarta o que foi digitado
+      document.getElementById('usuario').value = '';
+      document.getElementById('overlay-educativo').style.display = 'block';
+      window.scrollTo(0, 0);
+    });
+  </script>
 </body>
 </html>
